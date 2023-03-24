@@ -2,28 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:todo_list_bloc_state/blocs/bloc_exports.dart';
 import '../models/task.dart';
 import '../widgets/tasks_list.dart';
+import 'add_task_screen.dart';
 
-class TaskScreen extends StatelessWidget {
-  TaskScreen({Key? key}) : super(key: key);
+class TaskScreen extends StatefulWidget {
+  const TaskScreen({Key? key}) : super(key: key);
 
-TextEditingController titleController = TextEditingController();
-void _addTask(BuildContext context){
-  showModalBottomSheet(
-    context: context,
-     builder:(context) => SingleChildScrollView(
- child: Container(
-  padding : EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-
-  child: Column(children: [
-    TextField(
-      controller: titleController,
-    )
-  ],)
-  )
-
-     ),
-  );
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
 }
+
+class _TaskScreenState extends State<TaskScreen> {
+  void _addTask(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: const AddTaskScreen())),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TasksBloc, TasksState>(builder: (context, state) {
@@ -33,7 +32,7 @@ void _addTask(BuildContext context){
           title: const Text('TODO LIST'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => _addTask(context),
               icon: const Icon(Icons.add),
             )
           ],
